@@ -1,63 +1,60 @@
 import * as React from 'react';
-import { View, Text, AccessibilityInfo } from 'react-native';
-import {createAppContainer} from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import IndexScreen from './src/screens/index_screen';
 import firebase from './src/objects/firebase'
-import AccountScreen from './src/screens/account_screen';
 import SignUpScreen from './src/screens/sign_up_screen';
 import AccountsListProvider from './src/contexts/accountsListContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator} from '@react-navigation/native-stack';
+import IndexScreen from "./src/screens/index_screen";
+import AccountScreen from "./src/screens/account_screen";
+import { navigationRef } from './src/objects/rootNavigation';
 
-const screens = {
 
+const Stack = createNativeStackNavigator();
 
-  SignUpScreen : {
-    screen: SignUpScreen,
-    navigationOptions:{
-      title:'TITLE',
-      headerStyle:{backgroundColor:'yellow'}
-    }
-    
-  },
-  IndexScreen : {
-    screen: IndexScreen,
-    navigationOptions:{
-      title:'TITLE',
-      headerStyle:{backgroundColor:'grey'}
-    }
-    
-  },
-
-  AccountScreen : {
-    screen: AccountScreen,
-    navigationOptions:{
-      title:'TITLE',
-      headerStyle:{backgroundColor:'orange'}
-    }
-    
-  }
+function SignInScreen({navigation}){
+  return(<SignUpScreen nav={navigation}></SignUpScreen>)
 }
 
-const navigator = createStackNavigator(screens, {
-  initialRouteName:'SignUpScreen',
-  defaultNavigationOptions:{
-    title:'Default Title'
-  }
-});
+function IndexScreenF(){
+  return(<IndexScreen></IndexScreen>)
+}
+
+function AccountScreenF(props){
+return(<AccountScreen >{props}</AccountScreen>)
+}
 
 
-const App = createAppContainer(navigator);
 
-export default ()=>{
+
+const App = ()=>{
   firebase;
   return(
-    <AccountsListProvider>
     
-    <App />
+    <AccountsListProvider>
+
+      <NavigationContainer ref={navigationRef}>
+
+        <Stack.Navigator initialRouteName='index'>
+
+          <Stack.Screen name='sign in' component={ SignInScreen}/>
+          <Stack.Screen name='index' component={ IndexScreenF}/>
+          <Stack.Screen name='account' component={ AccountScreenF}/>
+
+         
+        
+        </Stack.Navigator>
+     
+      </NavigationContainer>
+    
+   
     </AccountsListProvider>
 
   )
+
 }
+
+
+export default App;
 
 
 

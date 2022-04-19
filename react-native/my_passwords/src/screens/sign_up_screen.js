@@ -1,33 +1,36 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native'
 import React, { useEffect , useState} from 'react'
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CustomTextInput from '../components/customTextInput';
-import { withNavigation } from 'react-navigation';
+
 import {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged} from "firebase/auth"
 import firebaseM from "../objects/firebase";
 
-export default withNavigation( function SignUpScreen(props) {
+export default function SignUpScreen(props) {
 
 
+  let auth = getAuth(firebaseM);
+  let [isLoggedIn, setIsLogged] = useState(false);
+  let [title, setTitle] = useState("Sign Up")
 
 
-   let auth = getAuth(firebaseM);
-   let [isLoggedIn, setIsLogged] = useState(false);
-   let [alreadyUser, setAlreadyUser] = useState(false)
+  useEffect(()=>{
+   props.nav.setOptions({title:title})
+  })
+
 
    onAuthStateChanged(auth,(user)=>{
-    
 
      if(user){
       setIsLogged(true)
-      props.navigation.replace('IndexScreen')
+      props.nav.push("index");
      }else{
       setIsLogged(false)
      }
    })
 
    
-   props.navigation.setParams({title:"jjjj"})
 
    if(isLoggedIn){
 
@@ -36,9 +39,9 @@ export default withNavigation( function SignUpScreen(props) {
   
 
     return(
-      <View>
+      <View style={{marginTop:20}}>
 
-      <Text> {alreadyUser ? "Login": "Sign Up"}</Text>
+
 
 
       <CustomTextInput placeholder={"mail"}></CustomTextInput>
@@ -49,7 +52,7 @@ export default withNavigation( function SignUpScreen(props) {
       <TouchableOpacity
       onPress={
          ()=>{
-          props.navigation.replace('IndexScreen')
+        //  props.nav.push("index");
          }
       }
       style={styles.button}
@@ -57,7 +60,12 @@ export default withNavigation( function SignUpScreen(props) {
       <Text>Accept</Text>
       </TouchableOpacity>
 
-
+      <TouchableOpacity 
+      onPress={()=>{
+        setTitle(title === "Sign Up"? "Log In": "Sign Up")
+      }}
+      style={styles.changeType}
+      ><Text style={styles.textChangeType}>{"Or... " + (title === "Sign Up"? "Log In": "Sign Up")}</Text></TouchableOpacity>
       </View>
    
 
@@ -67,12 +75,21 @@ export default withNavigation( function SignUpScreen(props) {
    }
 
 
-})
+}
 
 
 
 const styles = StyleSheet.create({
 
+  changeType:{
+    marginTop:15,
+    alignSelf:"center",
+    
+  },
+  textChangeType:{
+    textDecorationLine:"underline",
+    color:"blue"
+  },
 
     button:{
         backgroundColor:"orange",

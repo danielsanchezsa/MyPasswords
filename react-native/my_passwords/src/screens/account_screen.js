@@ -2,13 +2,15 @@ import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity} from 'react-
 import React, { useContext } from "react";
 import Section from '../components/sectionAccountScreen';
 import { AccountsListContext } from '../contexts/accountsListContext';
-import { withNavigation } from 'react-navigation';
+import * as rootNavigation from "../objects/rootNavigation"
 
 
+export default function AccountScreen(props){
 
-export default withNavigation( function AccountScreen(props){
-
-    const account = props.navigation.getParam('account');
+    console.log(props.children.route.params.account)
+  
+  
+    const account = props.children.route.params.account;
     const accountKeys = Object.keys(account);
     const accountValues = Object.values(account)
     const {deleteAccount} = useContext(AccountsListContext);
@@ -51,7 +53,7 @@ export default withNavigation( function AccountScreen(props){
         
         </View>
     )
-});
+};
 
 const styles = StyleSheet.create({
     floatingButton:{

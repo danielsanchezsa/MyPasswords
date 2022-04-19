@@ -7,7 +7,6 @@ import { AccountsListContext } from '../contexts/accountsListContext';
 
 export default function AccountsList (props){
     const {accounts} = useContext(AccountsListContext);
-
  
     return (
         <FlatList

@@ -1,6 +1,7 @@
 import React, {createContext, useState, useEffect} from 'react'
 
 import Account from '../objects/account';
+import firestore from '@react-native-firebase/firestore';
 
 export const AccountsListContext = createContext();
 

@@ -1,16 +1,17 @@
 
 import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
 import React from "react";
-import { withNavigation } from 'react-navigation';
+import * as rootNavigation from "../objects/rootNavigation"
 
+export default function  AccountTile(props){
 
-export default withNavigation(function  AccountTile(props){
 
     return(
        <TouchableOpacity onPress={
            ()=>{
-               props.navigation.navigate('AccountScreen', { account: props.account})
-         
+
+            rootNavigation.navigate('account', { me: "me",account: props.account})
+               
            }
        }>
             <View style={styles.containerStyle}>
@@ -23,7 +24,7 @@ export default withNavigation(function  AccountTile(props){
    </View>
        
        </TouchableOpacity>
-)})
+)}
 
 const styles = StyleSheet.create({
 
